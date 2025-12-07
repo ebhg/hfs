@@ -25,11 +25,12 @@
             background-color: var(--bg);
             margin: 0;
             padding: 0;
-            height: 100vh;
+            /* Allow body to scroll naturally */
+            min-height: 100dvh; 
             display: flex;
             flex-direction: column;
             color: var(--text);
-            overflow: hidden; /* Prevent body scroll, handle in main */
+            overflow-y: auto; /* Enable scroll on body */
         }
 
         /* Header */
@@ -38,9 +39,11 @@
             text-align: center;
             background: var(--card-bg);
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 10;
+            z-index: 100;
             flex-shrink: 0;
             transition: all 0.3s ease;
+            position: sticky; /* Keep header visible */
+            top: 0;
         }
 
         h1 {
@@ -77,11 +80,13 @@
         main {
             flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; /* Center vertically if content is short */
             padding: 20px;
-            overflow-y: auto;
-            position: relative;
+            width: 100%;
+            max-width: 600px; /* Constraint width for larger screens */
+            margin: 0 auto;
         }
 
         .card {
@@ -96,7 +101,8 @@
             flex-direction: column;
             align-items: center;
             animation: slideIn 0.3s ease-out;
-            margin: auto; /* Center vertically if height allows */
+            margin-bottom: 20px; /* Space between card and buttons */
+            user-select: none;
         }
 
         .card.active {
@@ -125,7 +131,7 @@
         .candle-wrapper {
             display: flex;
             justify-content: center;
-            gap: 5px; /* Changed from 15px to 5px */
+            gap: 5px;
             margin-bottom: 15px;
         }
 
@@ -145,7 +151,7 @@
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); } /* Changed from -8px to -3px for subtlety */
+            50% { transform: translateY(-3px); }
         }
 
         h2 {
@@ -168,13 +174,12 @@
         }
 
         /* Prayer Text Styling */
-        /* Updated hierarchy: Transliteration > English > Hebrew */
         
         .transliteration {
-            font-size: 1.3rem; /* Larger for readability */
-            font-weight: 600;  /* Bolder */
+            font-size: 1.3rem;
+            font-weight: 600;
             color: var(--primary);
-            font-style: normal; /* Removed italics for clarity */
+            font-style: normal;
             margin-bottom: 8px;
             line-height: 1.5;
             padding: 0 10px;
@@ -183,7 +188,7 @@
         .english {
             font-size: 1rem;
             color: var(--text-light);
-            font-style: italic; /* Added italics here for differentiation */
+            font-style: italic;
             margin-bottom: 20px;
             padding: 0 10px;
             line-height: 1.4;
@@ -191,28 +196,27 @@
 
         .hebrew {
             font-family: 'Times New Roman', serif;
-            font-size: 1.5rem; /* Slightly smaller than before */
+            font-size: 1.5rem;
             line-height: 1.4;
-            color: var(--text-light);   /* Darker, secondary color */
+            color: var(--text-light);
             margin-top: 15px;
             margin-bottom: 0;
             direction: rtl;
             font-weight: normal;
             padding: 10px;
-            background-color: #f9f9f9; /* Light background for box */
-            border: 1px solid #e0e0e0; /* Subtle border */
-            border-radius: 8px; /* Rounded corners */
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
         }
 
-        /* Footer Controls */
-        footer {
-            padding: 20px;
-            background: var(--card-bg);
+        /* Navigation Controls (Moved from Footer) */
+        .navigation-controls {
+            width: 100%;
+            max-width: 400px;
             display: flex;
             gap: 15px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            flex-shrink: 0;
-            z-index: 10;
+            margin-top: 10px;
+            padding-bottom: 20px;
         }
 
         button {
@@ -240,7 +244,7 @@
         }
 
         .btn-back {
-            background-color: #f0f0f0;
+            background-color: #e0e0e0; /* Slightly darker for better visibility on page */
             color: var(--text);
             flex: 0.4;
         }
@@ -303,7 +307,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- WELCOME SCREEN (Step 0) -->
         <div class="card active" id="welcome">
             <span class="icon single-bounce">🏠</span>
@@ -323,14 +327,14 @@
             <span class="icon single-bounce">📖</span>
             <h2>What is Shabbat?</h2>
             
-            <div class="text-block">
+            <div class="text-block" style="margin-bottom: 5px;">
                 <p>Shabbat is a sanctuary in time—a dedicated moment to disconnect from the busy week and reconnect with family, friends, and spirit.</p>
                 
                 <p style="font-weight: bold; margin-top: 15px; color: var(--accent);">The Three Pillars:</p>
-                <ul style="text-align: left; padding-left: 20px; margin: 10px 0;">
+                <ul style="text-align: left; padding-left: 20px; margin: 10px 0 0 0;">
                     <li style="margin-bottom: 8px;"><strong>Rest (Menuchah):</strong> We pause from the endless cycle of creating and doing to find true physical and spiritual tranquility.</li>
                     <li style="margin-bottom: 8px;"><strong>Holiness (Kedushah):</strong> We set this day apart from the ordinary, elevating the mundane into something sacred.</li>
-                    <li style="margin-bottom: 8px;"><strong>Joy (Oneg):</strong> We delight in the day through good food, relaxation, and the company of loved ones.</li>
+                    <li style="margin-bottom: 0;"><strong>Joy (Oneg):</strong> We delight in the day through good food, relaxation, and the company of loved ones.</li>
                 </ul>
             </div>
         </div>
@@ -442,12 +446,13 @@
             
             <div id="final-message" class="celebration hidden">Shabbat Shalom!</div>
         </div>
-    </main>
 
-    <footer class="hidden">
-        <button class="btn-back hidden" id="btnBack" onclick="changeStep(-1)">Back</button>
-        <button class="btn-next" id="btnNext" onclick="handleNextClick()">Next: Wine</button>
-    </footer>
+        <!-- New Navigation Container inside Main -->
+        <div class="navigation-controls hidden" id="navControls">
+            <button class="btn-back" id="btnBack" onclick="changeStep(-1)">Back</button>
+            <button class="btn-next" id="btnNext" onclick="handleNextClick()">Next: Wine</button>
+        </div>
+    </main>
 
     <script>
         let currentStep = 0; // 0 = Welcome
@@ -456,7 +461,7 @@
         const btnBack = document.getElementById('btnBack');
         const btnNext = document.getElementById('btnNext');
         const finalMessage = document.getElementById('final-message');
-        const footer = document.querySelector('footer');
+        const navControls = document.getElementById('navControls'); // New reference
         const progressContainer = document.querySelector('.progress-container');
 
         // Initial UI Setup
@@ -502,11 +507,16 @@
         }
 
         function updateUI() {
+            // SCROLL TO TOP - Added this block
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
             // Handle Welcome Screen (Step 0)
             if (currentStep === 0) {
                 document.getElementById('welcome').classList.add('active');
                 progressContainer.classList.add('hidden');
-                footer.classList.add('hidden');
+                navControls.classList.add('hidden'); // Use new nav control ID
                 
                 // Ensure other steps are hidden
                 for(let i=1; i<=totalSteps; i++) {
@@ -518,7 +528,7 @@
                 document.getElementById('welcome').classList.remove('active');
                 document.getElementById(`step${currentStep}`).classList.add('active');
                 progressContainer.classList.remove('hidden');
-                footer.classList.remove('hidden');
+                navControls.classList.remove('hidden'); // Use new nav control ID
             }
 
             // Update Dots
@@ -568,6 +578,37 @@
                 btnNext.innerText = "Start Over";
                 btnNext.classList.add('btn-finish');
                 finalMessage.classList.remove('hidden');
+            }
+        }
+
+        // Swipe Support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            if (currentStep === 0) return; // Disable swipe on welcome screen
+
+            if (touchEndX < touchStartX - 50) {
+                // Swipe Left -> Next
+                if (currentStep < totalSteps) {
+                     handleNextClick();
+                }
+            }
+            
+            if (touchEndX > touchStartX + 50) {
+                // Swipe Right -> Back
+                if (currentStep > 0) {
+                    changeStep(-1);
+                }
             }
         }
     </script>
